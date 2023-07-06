@@ -1,0 +1,8 @@
+.prettierignore
+**/*.js
+
+package.json
+.circleci/
+.vscode/
+
+**/autogen
