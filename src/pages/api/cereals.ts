@@ -1,10 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { cereals } from '../../constants/cereals'
+import { cereals } from "@/constants/cereals";
+import type { NextApiHandler, NextApiResponse } from "next";
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  res.status(200).json(cereals)
-}
+const getCereals: NextApiHandler = async (_, res: NextApiResponse) => {
+  res.status(200).json(cereals);
+};
+
+export default getCereals;

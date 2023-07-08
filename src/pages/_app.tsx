@@ -4,7 +4,7 @@ import { Inter } from "@next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <style jsx global>{`
@@ -15,4 +15,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
     </>
   );
-}
+};
+
+export default App;
