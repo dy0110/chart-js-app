@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC } from "react";
 import {
   Chart as ChartJS,
   LinearScale,
@@ -10,63 +10,23 @@ import {
 import { Scatter } from "react-chartjs-2";
 import { SelectItem } from "../selectItem";
 import { Cereal } from "@/types";
+import {
+  initialScaleX,
+  initialScaleY,
+  useScatterChart,
+} from "./hooks/useScatterChart";
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 const backgroundColor = "rgb(255, 99, 132)";
-const initialScaleX = "calories";
-const initialScaleY = "carbo";
 
 interface Props {
   cereals: Cereal[];
 }
 
-type ScaleState = {
-  scaleX: keyof Cereal;
-  scaleY: keyof Cereal;
-};
-
 export const Chart: FC<Props> = ({ cereals }) => {
-  const initialLoad = useRef(false);
-  const chartRef = useRef<
-    ChartJS<
-      "scatter",
-      {
-        x: string;
-        y: string;
-      }[]
-    >
-  >(null);
-  const [scale, setScale] = useState<ScaleState>({
-    scaleX: initialScaleX,
-    scaleY: initialScaleY,
-  });
-
-  const keys = Object.keys(cereals[0])
-    .filter((key) => key !== "name" && key !== "type" && key !== "mfr")
-    .map((key) => ({ value: key, label: key }));
-
-  useEffect(() => {
-    if (!initialLoad.current) {
-      initialLoad.current = true;
-      return;
-    }
-
-    if (!chartRef.current) return;
-    const { scaleX, scaleY } = scale;
-    const items = cereals.map((cereal) => {
-      return { x: cereal[scaleX], y: cereal[scaleY] };
-    });
-
-    chartRef.current.data.datasets[0].data = items;
-    if (chartRef.current.options.scales?.x?.title) {
-      chartRef.current.options.scales.x.title.text = scaleX as string;
-    }
-    if (chartRef.current.options.scales?.y?.title) {
-      chartRef.current.options.scales.y.title.text = scaleY as string;
-    }
-    chartRef.current.update();
-  }, [chartRef, cereals, scale]);
+  const { chartRef, keys, initialData, scale, setScale } =
+    useScatterChart(cereals);
 
   return (
     <div style={{ width: "600px", height: "400px" }}>
@@ -149,9 +109,7 @@ export const Chart: FC<Props> = ({ cereals }) => {
             {
               label: "80 Cereals",
               backgroundColor: backgroundColor,
-              data: cereals.map((cereal) => {
-                return { x: cereal.calories, y: cereal.carbo };
-              }),
+              data: initialData,
             },
           ],
         }}
