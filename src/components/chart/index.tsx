@@ -15,10 +15,23 @@ import {
   initialScaleY,
   useScatterChart,
 } from "./hooks/useScatterChart";
+import styled from "styled-components";
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 const backgroundColor = "rgb(255, 99, 132)";
+
+const Root = styled.div`
+  width: 600px;
+  height: 400px;
+`;
+
+const SelectWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  margin-bottom: 16px;
+`;
 
 interface Props {
   cereals: Cereal[];
@@ -29,43 +42,30 @@ export const Chart: FC<Props> = ({ cereals }) => {
     useScatterChart(cereals);
 
   return (
-    <div style={{ width: "600px", height: "400px" }}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          columnGap: "16px",
-          marginBottom: "16px",
-        }}
-      >
-        <div>
-          <SelectItem
-            htmlFor="yScale"
-            label="y軸"
-            instanceId="yScale"
-            options={keys}
-            value={{ label: scale.scaleY, value: scale.scaleY }}
-            onChange={(value) => {
-              if (!value) return;
-              setScale({ ...scale, scaleY: value.value as keyof Cereal });
-            }}
-          />
-        </div>
-        <div>
-          <SelectItem
-            htmlFor="xScale"
-            label="x軸"
-            instanceId="xScale"
-            value={{ label: scale.scaleX, value: scale.scaleX }}
-            options={keys}
-            onChange={(value) => {
-              if (!value) return;
+    <Root>
+      <SelectWrapper>
+        <SelectItem
+          label="Y軸"
+          instanceId="yScale"
+          options={keys}
+          value={{ label: scale.scaleY, value: scale.scaleY }}
+          onChange={(value) => {
+            if (!value) return;
+            setScale({ ...scale, scaleY: value.value as keyof Cereal });
+          }}
+        />
+        <SelectItem
+          label="X軸"
+          instanceId="xScale"
+          value={{ label: scale.scaleX, value: scale.scaleX }}
+          options={keys}
+          onChange={(value) => {
+            if (!value) return;
 
-              setScale({ ...scale, scaleX: value.value as keyof Cereal });
-            }}
-          />
-        </div>
-      </div>
+            setScale({ ...scale, scaleX: value.value as keyof Cereal });
+          }}
+        />
+      </SelectWrapper>
       <Scatter
         ref={chartRef}
         options={{
@@ -116,6 +116,6 @@ export const Chart: FC<Props> = ({ cereals }) => {
         width={300}
         height={300}
       />
-    </div>
+    </Root>
   );
 };
