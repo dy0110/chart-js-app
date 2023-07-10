@@ -1,10 +1,15 @@
 import React, { FC } from "react";
 import Head from "next/head";
+import styled from "styled-components";
 
-import { Cereal } from "@/constants/cereals";
 import { GetServerSideProps } from "next";
 
 import { Chart } from "@/components/chart";
+import { Cereal } from "@/types";
+
+const Section = styled.section`
+  padding: 10px;
+`;
 
 interface Props {
   cereals: Cereal[];
@@ -20,11 +25,11 @@ const Home: FC<Props> = ({ cereals }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <section style={{ padding: "10px" }}>
+        <Section>
           <h1>chart-js-app</h1>
           <p>シリアルのデータ</p>
           <Chart cereals={cereals} />
-        </section>
+        </Section>
       </main>
     </>
   );
