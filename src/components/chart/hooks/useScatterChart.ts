@@ -10,6 +10,7 @@ export interface ChartData {
   y: string;
   type: string;
   mfr: string;
+  name: string;
 }
 
 interface ChartState {
@@ -30,6 +31,7 @@ export const useScatterChart = (cereals: Cereal[]) => {
       y: cereal.carbo,
       type: cereal.type,
       mfr: cereal.mfr,
+      name: cereal.name,
     }));
 
     return {

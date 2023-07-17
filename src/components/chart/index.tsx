@@ -11,6 +11,7 @@ import { Scatter } from "react-chartjs-2";
 import { SelectItem } from "../selectItem";
 import { Cereal, CerealTypeOption, SearchItemOption } from "@/types";
 import {
+  ChartData,
   initialScaleX,
   initialScaleY,
   useScatterChart,
@@ -71,6 +72,7 @@ export const Chart: FC<Props> = ({ cereals }) => {
                 y: cereal[valueY],
                 type: cereal.type,
                 mfr: cereal.mfr,
+                name: cereal.name,
               })),
             });
           }}
@@ -92,6 +94,7 @@ export const Chart: FC<Props> = ({ cereals }) => {
                 y: cereal[scaleY],
                 type: cereal.type,
                 mfr: cereal.mfr,
+                name: cereal.name,
               })),
             });
           }}
@@ -110,6 +113,7 @@ export const Chart: FC<Props> = ({ cereals }) => {
               y: cereal[scaleY],
               type: cereal.type,
               mfr: cereal.mfr,
+              name: cereal.name,
             }));
 
             if (!value && !mfr) {
@@ -147,6 +151,7 @@ export const Chart: FC<Props> = ({ cereals }) => {
               y: cereal[scaleY],
               type: cereal.type,
               mfr: cereal.mfr,
+              name: cereal.name,
             }));
 
             if (!value && !type) {
@@ -180,6 +185,14 @@ export const Chart: FC<Props> = ({ cereals }) => {
             plugins: {
               legend: {
                 position: "bottom",
+              },
+              tooltip: {
+                callbacks: {
+                  label: (item) => {
+                    const raw = item.raw as ChartData;
+                    return `${raw.name}: (${item.parsed.x}, ${item.parsed.y})`;
+                  },
+                },
               },
             },
             scales: {
