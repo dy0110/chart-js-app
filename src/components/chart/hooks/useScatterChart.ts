@@ -1,52 +1,63 @@
 import { useEffect, useRef, useState } from "react";
-import { Chart as ChartJS } from "chart.js";
 import { Cereal } from "@/types";
+import { Chart as ChartJS } from "chart.js";
 
 export const initialScaleX = "calories";
 export const initialScaleY = "carbo";
 
-type ScaleState = {
+export interface ChartData {
+  x: string;
+  y: string;
+  type: string;
+  mfr: string;
+}
+
+interface ChartState {
   scaleX: keyof Cereal;
   scaleY: keyof Cereal;
-};
+  type: string | null;
+  mfr: string | null;
+  data: ChartData[];
+}
+
+export const initialKeyItem = { value: null, label: "選択してください" };
 
 export const useScatterChart = (cereals: Cereal[]) => {
-  const initialLoad = useRef(false);
-  const chartRef = useRef<
-    ChartJS<
-      "scatter",
-      {
-        x: string;
-        y: string;
-      }[]
-    >
-  >(null);
-  const [scale, setScale] = useState<ScaleState>({
-    scaleX: initialScaleX,
-    scaleY: initialScaleY,
+  const chartRef = useRef<ChartJS<"scatter", ChartData[]>>(null);
+  const [chartData, setChartData] = useState<ChartState>(() => {
+    const initialData = cereals.map((cereal) => ({
+      x: cereal.calories,
+      y: cereal.carbo,
+      type: cereal.type,
+      mfr: cereal.mfr,
+    }));
+
+    return {
+      scaleX: initialScaleX,
+      scaleY: initialScaleY,
+      type: null,
+      mfr: null,
+      data: initialData,
+    };
   });
 
-  const keys = Object.keys(cereals[0])
+  const graphKeys = Object.keys(cereals[0])
     .filter((key) => key !== "name" && key !== "type" && key !== "mfr")
     .map((key) => ({ value: key, label: key }));
 
-  const initialData = cereals.map((cereal) => {
-    return { x: cereal.calories, y: cereal.carbo };
-  });
+  const typeKeys = Array.from(
+    new Set(cereals.map((cereal) => cereal.type)),
+  ).map((key) => ({ value: key, label: key }));
+
+  const mfrKeys = Array.from(new Set(cereals.map((cereal) => cereal.mfr))).map(
+    (key) => ({ value: key, label: key }),
+  );
 
   useEffect(() => {
-    if (!initialLoad.current) {
-      initialLoad.current = true;
-      return;
-    }
-
     if (!chartRef.current) return;
-    const { scaleX, scaleY } = scale;
-    const items = cereals.map((cereal) => {
-      return { x: cereal[scaleX], y: cereal[scaleY] };
-    });
+    const { scaleX, scaleY, data } = chartData;
 
-    chartRef.current.data.datasets[0].data = items;
+    chartRef.current.data.datasets[0].data = data;
     if (chartRef.current.options.scales?.x?.title) {
       chartRef.current.options.scales.x.title.text = scaleX as string;
     }
@@ -54,13 +65,14 @@ export const useScatterChart = (cereals: Cereal[]) => {
       chartRef.current.options.scales.y.title.text = scaleY as string;
     }
     chartRef.current.update();
-  }, [chartRef, cereals, scale]);
+  }, [chartRef, cereals, chartData]);
 
   return {
     chartRef,
-    keys,
-    initialData,
-    scale,
-    setScale,
+    graphKeys,
+    typeKeys: [initialKeyItem, ...typeKeys],
+    mfrKeys: [initialKeyItem, ...mfrKeys],
+    chartData,
+    setChartData,
   };
 };
