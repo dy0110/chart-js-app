@@ -23,3 +23,8 @@ export type CerealTypeOption = {
   value: CerealType;
   label: CerealType;
 };
+
+export type SearchItemOption = {
+  value: string | null;
+  label: string;
+};

@@ -1,5 +1,4 @@
-import { CerealTypeOption } from "@/types";
-import { FC } from "react";
+import { PropsWithChildren } from "react";
 import Select, {
   PropsValue,
   OptionsOrGroups,
@@ -20,27 +19,24 @@ const Label = styled.div`
 `;
 
 const SelectWrapper = styled.div`
-  width: 180px;
+  width: 200px;
 `;
 
-interface Props {
+interface Props<T> {
   label: string;
   instanceId?: string | number;
-  value?: PropsValue<CerealTypeOption>;
-  options?: OptionsOrGroups<CerealTypeOption, GroupBase<CerealTypeOption>>;
-  onChange?: (
-    newValue: SingleValue<CerealTypeOption>,
-    actionMeta: ActionMeta<CerealTypeOption>,
-  ) => void;
+  value?: PropsValue<T>;
+  options?: OptionsOrGroups<T, GroupBase<T>>;
+  onChange?: (newValue: SingleValue<T>, actionMeta: ActionMeta<T>) => void;
 }
 
-export const SelectItem: FC<Props> = ({
+export const SelectItem = <T,>({
   label,
   instanceId,
   value,
   options,
   onChange,
-}) => {
+}: PropsWithChildren<Props<T>>) => {
   return (
     <Root>
       <Label>{`${label}: `}</Label>
