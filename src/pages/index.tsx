@@ -40,7 +40,9 @@ export default Home;
 export const getServerSideProps: GetServerSideProps<{
   cereals: Cereal[];
 }> = async () => {
-  const response = await fetch("http://localhost:3000/api/cereals");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cereals`,
+  );
   const cereals = await response.json();
   return {
     props: { cereals },
