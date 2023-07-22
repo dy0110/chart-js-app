@@ -32,7 +32,7 @@ License: CC BY-SA 3.0
 
 以下のポイントも加点します。
 
-5. VercelやAWS AppRunnerなどでアプリケーションをホスティングする
+5. VercelやAWS AppRunnerなどでアプリケーションをホスティングする → ホスティングしました。URLは<https://chart-js-app-x7h6.vercel.app/>
 6. ESlint、Prettierを追加・設定する
 7. ユニットテストを加える
 8. コードをリファクタリングする
@@ -96,8 +96,9 @@ DBコンテナへのデータ投入については、このREADME.md下部にあ
 ### 実行方法
 
 Node.jsのバージョンは16.13.2で動作確認しています。ローカルで開発される場合はこちらに相当するNode環境の準備をお願いいたします。
+→ Node.jsを18.16.1に更新しました。
 
-1. `npm ci` を実行
+1. ~~`npm ci` を実行~~ → npmを更新したため、`npm i --legacy-peer-deps`を実行してください
 2. `npm run dev` を実行
 3. <http://localhost:3000/> を開く
 
@@ -109,8 +110,8 @@ VSCodeを使われている場合は、拡張機能の「Dev Containers」を使
 ※もし初回でエラーが出たら一度 `docker compose up -d` を実行してみてください。
 
 1. Docker環境の起動 <br>
-  1-a. 通常起動する場合： `docker compose up -d` <br>
-  1-b. Dev Containersを使う場合： VSCodeの画面左下「><」みたいなボタンから「Reopen in Container」を選択 <br>
+   1-a. 通常起動する場合： `docker compose up -d` <br>
+   1-b. Dev Containersを使う場合： VSCodeの画面左下「><」みたいなボタンから「Reopen in Container」を選択 <br>
 1. `npm ci` を実行
 1. `npm run dev` を実行
 1. <http://localhost:3000/> を開く
@@ -133,7 +134,7 @@ Windowsの場合は以下の方法でMakeコマンドを準備できます。
 Windows11で動作確認してます。
 
 1. [Make for Windows](https://gnuwin32.sourceforge.net/packages/make.htm)からMakeのインストールファイルをダウンロードする。
-![image](https://user-images.githubusercontent.com/37053383/211447419-739f556a-fd79-4a6e-888f-a11ead2f79a0.png)
+   ![image](https://user-images.githubusercontent.com/37053383/211447419-739f556a-fd79-4a6e-888f-a11ead2f79a0.png)
 2. ダウンロードしたファイルをインストールする
 3. 環境変数にmake.exeのファイルパスを追加する。
    例：`C:\Program Files (x86)\GnuWin32\bin`
